@@ -12,7 +12,10 @@ import SwiftData
 struct Trip_PlannerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Trip.self,
+            Worker.self,
+            Assistence.self,
+            Passanger.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

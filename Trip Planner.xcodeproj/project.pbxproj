@@ -29,22 +29,9 @@
 		B29E06112CC1D01D003C6176 /* Trip PlannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Trip PlannerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B29E06602CC1EC5B003C6176 /* Exceptions for "Trip Planner" folder in "Trip Planner" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Trip-Planner-Info.plist",
-			);
-			target = B29E05F32CC1D01A003C6176 /* Trip Planner */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B29E05F62CC1D01A003C6176 /* Trip Planner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B29E06602CC1EC5B003C6176 /* Exceptions for "Trip Planner" folder in "Trip Planner" target */,
-			);
 			path = "Trip Planner";
 			sourceTree = "<group>";
 		};

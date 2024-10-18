@@ -54,6 +54,6 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView()
-        .modelContainer(for: Item.self, inMemory: true)
+        
 }
 

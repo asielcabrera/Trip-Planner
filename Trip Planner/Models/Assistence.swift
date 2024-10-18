@@ -13,7 +13,6 @@ final class Assistence {
     @Attribute(.unique) var id: UUID
     var assistenceDay: Date
     
-    @Relationship(deleteRule: .cascade, inverse: \Passanger.assistence)
     var passanger: [Passanger]?
     
     var conffirmationComplete: Bool

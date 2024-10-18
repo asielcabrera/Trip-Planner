@@ -14,7 +14,7 @@ struct WorkersView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            List {
                 ForEach(viewModel.workers) { worker in
                     NavigationLink(destination: WorkerDetailView(worker: worker)) {
                         WorkerRowView(worker: worker) // Mostrar los detalles básicos del viaje en la lista
