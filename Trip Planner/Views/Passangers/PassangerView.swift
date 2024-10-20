@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 struct PassangerView: View {
     var viewModel: PassangerViewModel = .init()

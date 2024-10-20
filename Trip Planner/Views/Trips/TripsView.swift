@@ -6,106 +6,167 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TripsView: View {
-    
-    private var viewModel = TripsViewModel()
+
     @State private var showingAddTripView = false
     
+    @Binding var showMenu: Bool
+    
+    @Query var allTrips: [Trip]
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.trips) { trip in
-                    NavigationLink(destination: TripDetailView(trip: trip)) {
-                        TripRowView(trip: trip) // Mostrar los detalles básicos del viaje en la lista
+            ZStack {
+                Color.tripPlannerLigth.ignoresSafeArea()
+                VStack(alignment: .leading) {
+                    
+                    Header
+                    TittleView
+                    
+                    if allTrips.isEmpty {
+                        Spacer()
+                        HStack(alignment: .center) {
+                            Spacer()
+                            EmptyListView
+                                .padding()
+                            Spacer()
+                        }
+                        Spacer()
+                    } else {
+                        TripListView
+                            .padding(.vertical)
                     }
                 }
-                .onDelete(perform: viewModel.deleteTrip)
+                .padding()
             }
-            .sheet(isPresented: $showingAddTripView, content: {
-                AddTripView(viewModel: viewModel)
-            })
-            .navigationBarTitle("Trips")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingAddTripView = true
-                    }) {
+        }
+    }
+    
+    
+    var Header: some View {
+        HStack {
+            Button(action: { showMenu.toggle() }) {
+                Image(systemName: showMenu ? "xmark" : "text.alignleft")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(Color.tripPlannerDark)
+                    .contentTransition(.symbolEffect)
+            }
+            
+            Spacer()
+            
+            Button(action: {
+                let trip = Trip(dateFor: .distantFuture, status: .pending, points: [])
+                modelContext.insert(trip)
+            }, label: {
+                Circle()
+                    .frame(width: 45, height: 45)
+                    .foregroundStyle(Color.tripPlannerDarkBritness)
+                    .overlay(content: {
                         Image(systemName: "plus")
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    // Formatter para mostrar la fecha
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter
-    }
-}
-
-
-struct TripRowView: View {
-    let trip: Trip
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Date: \(trip.dateFor, formatter: dateFormatter)")
-                .font(.headline)
-            Text("Status: \(trip.status.rawValue.capitalized)")
-                .font(.subheadline)
-        }
-    }
-    
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter
-    }
-}
-
-struct AddTripView: View {
-    @Environment(\.dismiss) var dismiss
-    @State private var dateFor = Date()
-    @State private var selectedStatus: Status = .pending
-    @State private var points: [Point] = []
-    
-    var viewModel: TripsViewModel
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                DatePicker("Date", selection: $dateFor, displayedComponents: .date)
-                
-                Picker("Status", selection: $selectedStatus) {
-                    ForEach(Status.allCases) { status in
-                        Text(status.rawValue.capitalized).tag(status)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                
-                Section(header: Text("Points")) {
-                    ForEach(points, id: \.latitude) { point in
-                        Text("Lat: \(point.latitude), Lon: \(point.longitude)")
-                    }
-                    Button("Add Point") {
-                        // Agregar un punto ficticio, en una implementación real sería un formulario o mapa
-                        points.append(Point(latitude: 0.0, longitude: 0.0))
-                    }
-                }
-                
-                Button("Add Trip") {
-                    viewModel.addTrip(dateFor: dateFor, status: selectedStatus, points: points)
-                    dismiss()
-                }
-            }
-            .navigationTitle("New Trip")
-            .navigationBarItems(leading: Button("Cancel") {
-                dismiss()
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .foregroundColor(Color.tripPlannerDark)
+                    })
             })
         }
+    }
+    
+    
+    var EmptyListView: some View {
+        VStack(alignment: .center) {
+            Text("Trips will appear here")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+    }
+    
+    var TittleView: some View {
+        VStack(alignment: .leading) {
+            Text("Your Trips")
+                .font(.system(size: 15))
+                .foregroundStyle(Color.tripPlannerDark)
+            Text("Trips")
+                .font(.system(size: 40))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.top, 25)
+    }
+    
+    
+    var TripListView: some View {
+        ScrollView {
+            ForEach(allTrips) { trip in
+                TripListRowView(trip: trip)
+            }
+            .onDelete(perform: deleteTrip)
+        }
+        .swipeActions(content: {
+            
+        })
+        .scrollIndicators(.hidden)
+    }
+    
+    func deleteTrip(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let trip = allTrips[index]
+            modelContext.delete(trip)
+        }
+    }
+    
+    @ViewBuilder
+    func TripListRowView(trip: Trip) -> some View {
+        CustomListRowView {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(trip.dateFor.description)
+                        .font(.title3)
+                        .foregroundStyle(.black)
+                    Text(trip.status.rawValue)
+                        .font(.caption2)
+                        .foregroundStyle(Color.tripPlannerDark)
+                }
+                
+                Spacer()
+                
+                VStack {
+                    Text("\(trip.points.count)")
+                        .foregroundStyle(Color.tripPlannerDark)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    @ViewBuilder
+    func CustomListRowView<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        Rectangle()
+            .fill(Color.tripPlannerLigth)
+            .cornerRadius(25)
+            .frame(height: 80)
+            .overlay {
+                content()
+            }
+    }
+    
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }
+}
+
+#Preview {
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try  ModelContainer(for: Trip.self, configurations: config)
+    return HomeView()
+            .modelContainer(container)
+    }
+    catch {
+        fatalError("Unable to create model container: \(error)")
     }
 }

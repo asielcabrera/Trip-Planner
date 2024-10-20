@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import SwiftData
+
 
 struct CreateUserView: View {
     @State private var email = ""

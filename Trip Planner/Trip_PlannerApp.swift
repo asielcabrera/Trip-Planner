@@ -10,26 +10,18 @@ import SwiftData
 
 @main
 struct Trip_PlannerApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Trip.self,
-            Worker.self,
-            Assistence.self,
-            Passanger.self
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @Bindable var appViewModel = AuthenticationViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            if appViewModel.isLoggedIn {
+                HomeView() // Redirige al HomeView si está autenticado
+                    .environmentObject(appViewModel)
+            } else {
+                LoginView() // Muestra el LoginView si no está autenticado
+                    .environmentObject(appViewModel)
+            }
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(for: [Trip.self])
     }
 }

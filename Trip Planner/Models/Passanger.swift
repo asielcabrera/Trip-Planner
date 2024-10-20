@@ -9,16 +9,14 @@ import Foundation
 import SwiftData
 
 @Model
-final class Passanger: Identifiable {
-    @Attribute(.unique) var id: UUID
+final class Passanger {
     var firstName: String
     var lastName: String
     var address: String
     
     var assistence: [WeekDay] = []
     
-    init(id: UUID = UUID(), firstName: String, lastName: String, address: String) {
-        self.id = id
+    init(firstName: String, lastName: String, address: String) {
         self.firstName = firstName
         self.lastName = lastName
         self.address = address

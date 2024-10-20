@@ -10,14 +10,11 @@ import SwiftData
 
 @Model
 final class Worker: Identifiable {
-    
-    @Attribute(.unique) var id: UUID
     var firstName: String
     var lastName: String
     var role: Role
     
-    init(id: UUID = UUID(), firstName: String, lastName: String, role: Role) {
-        self.id = id
+    init(firstName: String, lastName: String, role: Role) {
         self.firstName = firstName
         self.lastName = lastName
         self.role = role

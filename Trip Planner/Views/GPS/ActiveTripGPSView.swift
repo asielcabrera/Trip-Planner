@@ -8,6 +8,8 @@
 
 import SwiftUI
 import MapKit
+import SwiftData
+
 
 //struct ActiveTripGPSView: View {
 //    @Bindable private var viewModel = ActiveTripGPSViewModel()

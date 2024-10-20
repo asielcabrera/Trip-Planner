@@ -9,22 +9,19 @@ import Foundation
 import SwiftData
 
 @Model
-final class Trip: Identifiable {
-    @Attribute(.unique) var id: UUID
+final class Trip {
     var dateFor: Date
     var status: Status
     var points: [Point]
     
-    init(id: UUID = UUID(), dateFor: Date, status: Status, points: [Point]) {
-        self.id = id
+    init(dateFor: Date, status: Status, points: [Point]) {
         self.dateFor = dateFor
         self.status = status
         self.points = points
     }
 }
 
-struct Point: Codable, Identifiable {
-    var id: String { "\(latitude) - \(longitude)"}
+struct Point: Codable {
     let latitude, longitude: Double
 }
 

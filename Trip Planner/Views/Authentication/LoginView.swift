@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import SwiftData
+
 
 struct LoginView: View {
     @State private var email = ""
@@ -92,28 +94,33 @@ struct LoginView: View {
         let loginData = ["email": email, "password": password]
         request.httpBody = try? JSONSerialization.data(withJSONObject: loginData)
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                isLoading = false
-
-                if let error = error {
-                    errorMessage = "Error: \(error.localizedDescription)"
-                    return
-                }
-
-                guard let data = data else {
-                    errorMessage = "No data received."
-                    return
-                }
-
-                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    // Autenticación exitosa, manejar el token o redirigir a la vista principal
-                    print("Login successful")
-                } else {
-                    errorMessage = "Login failed."
-                }
-            }
-        }.resume()
+        UserDefaults.standard.set("Token", forKey: "authToken")
+        
+        print("login")
+        
+        
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            DispatchQueue.main.async {
+//                isLoading = false
+//
+//                if let error = error {
+//                    errorMessage = "Error: \(error.localizedDescription)"
+//                    return
+//                }
+//
+//                guard let data = data else {
+//                    errorMessage = "No data received."
+//                    return
+//                }
+//
+//                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+//                    // Autenticación exitosa, manejar el token o redirigir a la vista principal
+//                    print("Login successful")
+//                } else {
+//                    errorMessage = "Login failed."
+//                }
+//            }
+//        }.resume()
     }
 }
 

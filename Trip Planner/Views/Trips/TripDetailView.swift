@@ -8,6 +8,8 @@
 
 import SwiftUI
 import MapKit
+import SwiftData
+
 
 struct TripDetailView: View {
     let trip: Trip

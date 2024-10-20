@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 struct ProfileView: View {
     @State private var firstName: String = "John" // Cambia estos valores según sea necesario
@@ -43,6 +45,7 @@ struct ProfileView: View {
             Button(action: {
                 // Aquí puedes agregar la lógica para cerrar sesión
                 print("Logout tapped")
+                AuthenticationViewModel().logout()
             }) {
                 Text("Logout")
                     .font(.headline)

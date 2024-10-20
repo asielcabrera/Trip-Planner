@@ -10,15 +10,12 @@ import SwiftData
 
 @Model
 final class Assistence {
-    @Attribute(.unique) var id: UUID
     var assistenceDay: Date
-    
     var passanger: [Passanger]?
     
     var conffirmationComplete: Bool
     
-    init(id: UUID, assistenceDay: Date, passanger: [Passanger]) {
-        self.id = id
+    init(assistenceDay: Date, passanger: [Passanger]) {
         self.assistenceDay = assistenceDay
         self.passanger = passanger
         conffirmationComplete = false

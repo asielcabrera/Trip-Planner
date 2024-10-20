@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AssistanceView: View {
     private var viewModel = AssistanceViewModel()
