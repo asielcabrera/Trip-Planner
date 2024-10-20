@@ -12,9 +12,13 @@ import SwiftData
 struct PassangerView: View {
     var viewModel: PassangerViewModel = .init()
     @State private var showingAddPassangerView = false
-    
+    @Binding var showMenu: Bool
     var body: some View {
-        NavigationView {
+        BaseLayoutView(
+            tittle: "Passangers",
+            plusButtonAction: {
+            showingAddPassangerView = true
+        }, showMenu: $showMenu) {
             List {
                 ForEach(viewModel.passangers) { passanger in
                     NavigationLink(destination: PassangerDetailView(passanger: passanger)) {
@@ -26,16 +30,6 @@ struct PassangerView: View {
             .sheet(isPresented: $showingAddPassangerView, content: {
                 AddPassangerView(viewModel: viewModel)
             })
-            .navigationBarTitle("Passangers")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingAddPassangerView = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
         }
     }
 }
@@ -44,11 +38,13 @@ struct PassangerRowView: View {
     let passanger: Passanger
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("\(passanger.firstName) \(passanger.lastName)")
-                .font(.headline)
-            Text(passanger.address)
-                .font(.subheadline)
+        CustomListRowView {
+            VStack(alignment: .leading) {
+                Text("\(passanger.firstName) \(passanger.lastName)")
+                    .font(.headline)
+                Text(passanger.address)
+                    .font(.subheadline)
+            }
         }
     }
 }

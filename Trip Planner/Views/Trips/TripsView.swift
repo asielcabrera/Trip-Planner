@@ -18,63 +18,26 @@ struct TripsView: View {
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.tripPlannerLigth.ignoresSafeArea()
-                VStack(alignment: .leading) {
-                    
-                    Header
-                    TittleView
-                    
-                    if allTrips.isEmpty {
-                        Spacer()
-                        HStack(alignment: .center) {
-                            Spacer()
-                            EmptyListView
-                                .padding()
-                            Spacer()
-                        }
-                        Spacer()
-                    } else {
-                        TripListView
-                            .padding(.vertical)
-                    }
+        BaseLayoutView(
+            tittle: "Trips",
+            showPlusButtonAction: false,
+            showMenu: $showMenu,
+            content: {
+            if allTrips.isEmpty {
+                Spacer()
+                HStack(alignment: .center) {
+                    Spacer()
+                    EmptyListView
+                        .padding()
+                    Spacer()
                 }
-                .padding()
+                Spacer()
+            } else {
+                TripListView
+                    .padding(.vertical)
             }
-        }
+        })
     }
-    
-    
-    var Header: some View {
-        HStack {
-            Button(action: { showMenu.toggle() }) {
-                Image(systemName: showMenu ? "xmark" : "text.alignleft")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(Color.tripPlannerDark)
-                    .contentTransition(.symbolEffect)
-            }
-            
-            Spacer()
-            
-            Button(action: {
-                let trip = Trip(dateFor: .distantFuture, status: .pending, points: [])
-                modelContext.insert(trip)
-            }, label: {
-                Circle()
-                    .frame(width: 45, height: 45)
-                    .foregroundStyle(Color.tripPlannerDarkBritness)
-                    .overlay(content: {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 20, height: 20, alignment: .center)
-                            .foregroundColor(Color.tripPlannerDark)
-                    })
-            })
-        }
-    }
-    
     
     var EmptyListView: some View {
         VStack(alignment: .center) {
@@ -83,20 +46,7 @@ struct TripsView: View {
                 .foregroundStyle(.secondary)
         }
     }
-    
-    var TittleView: some View {
-        VStack(alignment: .leading) {
-            Text("Your Trips")
-                .font(.system(size: 15))
-                .foregroundStyle(Color.tripPlannerDark)
-            Text("Trips")
-                .font(.system(size: 40))
-                .foregroundStyle(.secondary)
-        }
-        .padding(.top, 25)
-    }
-    
-    
+
     var TripListView: some View {
         ScrollView {
             ForEach(allTrips) { trip in
@@ -139,17 +89,6 @@ struct TripsView: View {
             }
             .padding(.horizontal, 20)
         }
-    }
-    
-    @ViewBuilder
-    func CustomListRowView<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
-        Rectangle()
-            .fill(Color.tripPlannerLigth)
-            .cornerRadius(25)
-            .frame(height: 80)
-            .overlay {
-                content()
-            }
     }
     
     private var dateFormatter: DateFormatter {

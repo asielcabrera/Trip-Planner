@@ -12,9 +12,8 @@ struct HomeView: View {
     @State private var selectedTab = 0
     @State private var showMenu: Bool = false
     var body: some View {
-        
         AnimateSideBar(showMenu: $showMenu) { safeArea in
-            TripsView(showMenu: $showMenu)
+            PassangerView(showMenu: $showMenu)
         } menuView: { safeArea in
             SideBarMenu(safeArea: safeArea)
         } background: {
