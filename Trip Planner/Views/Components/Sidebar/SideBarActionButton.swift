@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SideBarActionButton: View {
     let value: SideBarAction
-    let action: () -> () = {}
+    let action: () -> ()
     
     var body: some View {
         Button(action: action) {

@@ -11,10 +11,9 @@ import SwiftData
 struct TripsView: View {
 
     @State private var showingAddTripView = false
-    
     @Binding var showMenu: Bool
     
-    @Query var allTrips: [Trip]
+    @Query var allTrips: [Trip] = []
     @Environment(\.modelContext) var modelContext
     
     var body: some View {

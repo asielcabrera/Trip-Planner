@@ -10,6 +10,7 @@ import SwiftUI
 struct SideBarMenu: View {
     
     let safeArea: UIEdgeInsets
+    @Binding var selectedAction: SideBarAction
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -19,13 +20,18 @@ struct SideBarMenu: View {
                 .padding(.bottom, 10)
             
             ForEach(SideBarAction.primary, id: \.rawValue) { action in
-                SideBarActionButton(value: action)
+                SideBarActionButton(value: action) {
+                    selectedAction = action
+                }
             }
             
             Spacer()
             
             ForEach(SideBarAction.secondary, id: \.rawValue) { action in
-                SideBarActionButton(value: action)
+                SideBarActionButton(value: action){
+                    selectedAction = action
+                }
+                
             }
             
         }
@@ -37,6 +43,4 @@ struct SideBarMenu: View {
     }
 }
 
-#Preview {
-    SideBarMenu(safeArea: .zero)
-}
+

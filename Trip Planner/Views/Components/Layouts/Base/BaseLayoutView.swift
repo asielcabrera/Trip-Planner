@@ -38,7 +38,7 @@ struct BaseLayoutView<Content: View>: View  {
                 Image(systemName: showMenu ? "xmark" : "text.alignleft")
                     .resizable()
                     .frame(width: 40, height: 40)
-                    .foregroundColor(Color.tripPlannerDark)
+                    .foregroundColor(.tripPlannerDark)
                     .contentTransition(.symbolEffect)
             }
             
@@ -66,10 +66,10 @@ struct BaseLayoutView<Content: View>: View  {
         VStack(alignment: .leading) {
             Text("Your \(tittle)")
                 .font(.system(size: 15))
-                .foregroundStyle(Color.bg.opacity(0.9))
+                .foregroundStyle(.tripPlannerBackground.opacity(0.9))
             Text("\(tittle) List")
                 .font(.system(size: 40))
-                .foregroundStyle(.bg)
+                .foregroundStyle(.tripPlannerBackground)
         }
         .padding(.top, 25)
     }
