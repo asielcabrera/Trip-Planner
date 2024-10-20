@@ -10,35 +10,60 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false // Usar AppStorage para guardar el estado
     @State private var selectedTheme: String = "Default"
-
+    @Binding var showMenu: Bool
     var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Appearance")) {
-                    // Interruptor para Modo Claro/Oscuro
-                    Toggle("Dark Mode", isOn: $isDarkMode)
-                        .onChange(of: isDarkMode) { value in
-                            // Implementar cualquier acción que quieras hacer cuando el modo cambie
+        BaseLayoutView(tittle: "Settings",
+                       showPlusButtonAction: false,
+                       showTittleView: true,
+                       showMenu: $showMenu) {
+            VStack {
+                VStack(alignment: .leading) {
+                    Text("Appearance")
+                        .font(.system(size: 25))
+                        .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                    VStack {
+                        Toggle("Dark Mode", isOn: $isDarkMode)
+                            .font(.system(size: 15))
+                            .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                        
+                        HStack {
+                            Text("Theme")
+                                .font(.system(size: 15))
+                                .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                            Spacer(minLength: 0)
+                            Picker("Theme", selection: $selectedTheme) {
+                                Text("Default").tag("Default")
+                                Text("Blue").tag("Blue")
+                                Text("Green").tag("Green")
+                                Text("Red").tag("Red")
+                            }
+                            .font(.system(size: 15))
+                            .foregroundStyle(.tripPlannerBackground)
                         }
-                    
-                    // Selector de Temas
-                    Picker("Theme", selection: $selectedTheme) {
-                        Text("Default").tag("Default")
-                        Text("Blue").tag("Blue")
-                        Text("Green").tag("Green")
-                        Text("Red").tag("Red")
-                    }
+                    }.padding(.leading, 15)
                 }
                 
-                Section(header: Text("Other Settings")) {
+                VStack(alignment: .leading) {
+                    Text("Other Settings")
+                        .font(.system(size: 25))
+                        .foregroundStyle(.tripPlannerBackground.opacity(0.9))
                     // Puedes agregar más configuraciones aquí
-                    Toggle("Notifications", isOn: .constant(true)) // Placeholder para futuras configuraciones
-                    Toggle("Location Services", isOn: .constant(false))
+                    VStack {
+                        Toggle("Notifications", isOn: .constant(true)) // Placeholder para futuras configuraciones
+                            .font(.system(size: 15))
+                            .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                        Toggle("Location Services", isOn: .constant(false))
+                            .font(.system(size: 15))
+                            .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                    }
+                    .padding(.leading, 15)
                 }
+                Spacer(minLength: 0)
             }
-            .navigationBarTitle("Settings", displayMode: .inline)
+            .padding(.top, 10)
+            .padding(.horizontal)
         }
-        .preferredColorScheme(isDarkMode ? .dark : .light) // Aplicar el modo seleccionado
+                       .preferredColorScheme(isDarkMode ? .dark : .light) // Aplicar el modo seleccionado
     }
 }
 

@@ -15,7 +15,7 @@ struct Trip_PlannerApp: App {
     var body: some Scene {
         WindowGroup {
             if appViewModel.isLoggedIn {
-                HomeView() // Redirige al HomeView si está autenticado
+                ContentView() // Redirige al HomeView si está autenticado
                     .environmentObject(appViewModel)
             } else {
                 LoginView() // Muestra el LoginView si no está autenticado

@@ -6,18 +6,28 @@
 //
 
 import Foundation
-import SwiftData
 
-@Model
-final class Assistence {
-    var assistenceDay: Date
-    var passanger: [Passanger]?
+enum Assistence {
+    struct Input: Codable, Identifiable {
+        var id: UUID
+        var assistenceDay: Date
+        var passanger: [Passanger.Input]?
+        
+        var conffirmationComplete: Bool
+        
+        init(id: UUID, assistenceDay: Date, passanger: [Passanger.Input]? = nil, conffirmationComplete: Bool) {
+            self.id = id
+            self.assistenceDay = assistenceDay
+            self.passanger = passanger
+            self.conffirmationComplete = conffirmationComplete
+        }
+    }
     
-    var conffirmationComplete: Bool
-    
-    init(assistenceDay: Date, passanger: [Passanger]) {
-        self.assistenceDay = assistenceDay
-        self.passanger = passanger
-        conffirmationComplete = false
+    struct Output: Codable, Identifiable {
+        var id: UUID
+        var assistenceDay: Date
+        var passanger: [Passanger.Input]?
+        
+        var conffirmationComplete: Bool
     }
 }

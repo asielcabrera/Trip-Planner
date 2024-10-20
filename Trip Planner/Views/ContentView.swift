@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct HomeView: View {
+struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showMenu: Bool = false
     @State private var selectedAction: SideBarAction = .trips
@@ -18,9 +18,9 @@ struct HomeView: View {
             case .trips:
                 TripsView(showMenu: $showMenu)
             case .workers:
-                WorkersView()
+                WorkersView(showMenu: $showMenu)
             case .settings:
-                SettingsView()
+                SettingsView(showMenu: $showMenu)
             case .assistence:
                 AssistanceView()
             case .passangers:
@@ -38,6 +38,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    ContentView()
         .modelContainer(for: [Trip.self])
 }

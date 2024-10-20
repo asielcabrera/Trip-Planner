@@ -6,28 +6,30 @@
 //
 
 import Foundation
-import SwiftData
 
-@Model
-final class Trip {
-    var dateFor: Date
-    var status: Status
-    var points: [Point]
-    
-    init(dateFor: Date, status: Status, points: [Point]) {
-        self.dateFor = dateFor
-        self.status = status
-        self.points = points
+enum Trip {
+    struct Input: Codable, Identifiable {
+        
+        var id: UUID
+        var dateFor: Date
+        var status: Status
+        var points: [Point]
+        
+        init(id: UUID, dateFor: Date, status: Status = .pending, points: [Point] = []) {
+            self.id = id
+            self.dateFor = dateFor
+            self.status = status
+            self.points = points
+        }
     }
 }
-
-struct Point: Codable {
-    let latitude, longitude: Double
-}
-
-
-enum Status: String, Codable, CaseIterable, Identifiable {
-    case pending, inProgress, completed
+    struct Point: Codable {
+        let latitude, longitude: Double
+    }
     
-    var id: String { self.rawValue }
-}
+    
+    enum Status: String, Codable, CaseIterable, Identifiable {
+        case pending, inProgress, completed
+        
+        var id: String { self.rawValue }
+    }

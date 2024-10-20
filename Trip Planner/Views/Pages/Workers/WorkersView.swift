@@ -9,29 +9,83 @@ import SwiftUI
 
 struct WorkersView: View {
     
-    private var viewModel = WorkersViewModel()
-    @State private var showingAddWorkerView = false
+    var viewModel = WorkersViewModel()
+    @State var showingAddWorkerView = false
+    @Binding var showMenu: Bool
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(viewModel.workers) { worker in
-                    NavigationLink(destination: WorkerDetailView(worker: worker)) {
-                        WorkerRowView(worker: worker) // Mostrar los detalles básicos del viaje en la lista
-                    }
-                }
-                .onDelete(perform: viewModel.deleteWorker)
-            }
-            .navigationTitle("Workers")
-            .navigationBarItems(trailing: Button(action: {
+        
+        BaseLayoutView(
+            tittle: "Workers",
+            plusButtonAction: {
                 showingAddWorkerView = true
-            }) {
-                Image(systemName: "plus")
-            })
-            .sheet(isPresented: $showingAddWorkerView) {
-                AddWorkerView(viewModel: viewModel)
+            },
+            showMenu: $showMenu) {
+                List {
+                    ForEach(viewModel.workers) { worker in
+                        NavigationLink(destination: WorkerDetailView(worker: worker)) {
+                            WorkerRowView(worker: worker) // Mostrar los detalles básicos del viaje en la lista
+                        }
+                    }
+                    .onDelete(perform: viewModel.deleteWorker)
+                }
+                
+                .sheet(isPresented: $showingAddWorkerView) {
+                    AddWorkerView(viewModel: viewModel)
+                }
             }
+
+    }
+    
+    var EmptyListView: some View {
+        VStack(alignment: .center) {
+            Text("Workers will appear here")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
         }
+    }
+
+    var WorkersListView: some View {
+        ScrollView {
+            ForEach(allTrips) { trip in
+                TripListRowView(trip: trip)
+            }
+            .onDelete(perform: deleteTrip)
+        }
+        .swipeActions(content: {
+            
+        })
+        .scrollIndicators(.hidden)
+    }
+    
+    @ViewBuilder
+    func WorkersListRowView(worker: Workers.Input) -> some View {
+        CustomListRowView {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(trip.dateFor.description)
+                        .font(.title3)
+                        .foregroundStyle(.black)
+                    Text(trip.status.rawValue)
+                        .font(.caption2)
+                        .foregroundStyle(Color.tripPlannerDark)
+                }
+                
+                Spacer()
+                
+                VStack {
+                    Text("\(trip.points.count)")
+                        .foregroundStyle(Color.tripPlannerDark)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
     }
 }
 

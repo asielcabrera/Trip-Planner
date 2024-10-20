@@ -128,6 +128,6 @@ struct AnimateSideBar<Content: View, MenuView: View, Background: View>: View {
 }
 
 #Preview {
-    HomeView()
+    ContentView()
         .modelContainer(for: [Trip.self])
 }

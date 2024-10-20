@@ -16,6 +16,7 @@ struct SideBarActionButton: View {
             HStack(spacing: 12) {
                 Image(systemName: value.symbolImage)
                     .font(.title3)
+                    .frame(width: 25, height: 25)
                 
                 Text(value.rawValue)
                     .fontWeight(.semibold)
@@ -24,6 +25,7 @@ struct SideBarActionButton: View {
             }
             .foregroundStyle(Color.tripPlannerLigth)
             .padding(.vertical, 10)
+            .padding(.leading, 10)
             .contentShape(.rect)
         }
     }

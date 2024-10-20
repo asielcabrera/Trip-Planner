@@ -101,7 +101,7 @@ struct TripsView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try  ModelContainer(for: Trip.self, configurations: config)
-    return HomeView()
+    return ContentView()
             .modelContainer(container)
     }
     catch {

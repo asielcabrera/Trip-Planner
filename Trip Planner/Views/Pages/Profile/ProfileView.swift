@@ -10,8 +10,8 @@ import SwiftData
 
 
 struct ProfileView: View {
-    @State private var firstName: String = "John" // Cambia estos valores según sea necesario
-    @State private var lastName: String = "Doe"
+    @State private var firstName: String = "Sergio" // Cambia estos valores según sea necesario
+    @State private var lastName: String = "Cabrera"
     @State private var role: Role = .Worker // Asigna el rol correspondiente
 
     var body: some View {
