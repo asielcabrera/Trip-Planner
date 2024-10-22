@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AnimateSideBar<Content: View, MenuView: View, Background: View>: View {
     var rotatesWhenExpands: Bool = true
-    var disablesInteraction: Bool = false
+    var disablesInteraction: Bool = true
     var sideMenuWidth: CGFloat = 200
     var cornerRadius: CGFloat = 25
     
@@ -129,5 +129,4 @@ struct AnimateSideBar<Content: View, MenuView: View, Background: View>: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: [Trip.self])
 }

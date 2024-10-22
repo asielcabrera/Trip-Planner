@@ -12,13 +12,26 @@ import SwiftData
 
 @Observable
 final class TripsViewModel {
+    var trips: [Trip.Input] = [
+        .init(id: .init(), dateFor: .distantFuture),
+        .init(id: .init(), dateFor: .distantFuture),
+        .init(id: .init(), dateFor: .distantFuture),
+        .init(id: .init(), dateFor: .distantFuture)
+    ]
     
     func addTrip(dateFor: Date, status: Status, points: [Point]) {
-        let newTrip = Trip(dateFor: dateFor, status: status, points: points)
-//        try newTrip.modelContext?.save()
+        let trip = Trip.Input(id: .init(), dateFor: dateFor, status: status, points: points)
+        trips.append(trip)
     }
     
-    func deleteTrip(_ trip: Trip) {
-//        trip.modelContext?.delete(<#T##T#>)
+    func updateTrip(_ trip: Trip.Input) {
+        guard let index = trips.firstIndex (where: { $0.id == trip.id }) else { return }
+        trips[index] = trip
+    }
+        
+    func deleteTrip(_ indexSet: IndexSet) {
+        for index in indexSet {
+            trips.remove(at: index)
+        }
     }
 }

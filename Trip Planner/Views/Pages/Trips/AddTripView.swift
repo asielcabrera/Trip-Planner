@@ -13,9 +13,7 @@ struct AddTripView: View {
     @State private var dateFor = Date()
     @State private var selectedStatus: Status = .pending
     @State private var points: [Point] = []
-    
-    @Environment(\.modelContext) var modelContext
-    
+
     var viewModel: TripsViewModel
     
     var body: some View {
@@ -41,7 +39,7 @@ struct AddTripView: View {
                 }
                 
                 Button("Add Trip") {
-                    addTrip(dateFor: dateFor, status: selectedStatus, points: points)
+                    viewModel.addTrip(dateFor: dateFor, status: selectedStatus, points: points)
                     dismiss()
                 }
             }
@@ -50,10 +48,5 @@ struct AddTripView: View {
                 dismiss()
             })
         }
-    }
-    
-    func addTrip(dateFor: Date, status: Status, points: [Point]) {
-        let newTrip = Trip(dateFor: dateFor, status: status, points: points)
-        modelContext.insert(newTrip)
     }
 }

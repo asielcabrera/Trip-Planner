@@ -17,61 +17,74 @@ struct LoginView: View {
     @State private var isLoading = false
     @State private var showingCreateUser = false
 
+    @Environment(\.authenticationContext) var authenticationContext
+    
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                Spacer()
-                
-                Text("Login")
+        BaseLayoutView(
+            showTittleView: false,
+            showHeaderView: false,
+            showMenu: .constant(false)
+        ) {
+            
+            VStack(spacing: 20) {
+                 
+                    Spacer()
+                Text("Trip Planner")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundStyle(.tripPlannerBackground)
+               
                 
-                TextField("Email", text: $email)
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(8)
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-
-                SecureField("Password", text: $password)
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(8)
-                
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .padding(.top, 10)
-                }
-                
-                Button(action: {
-                    loginUser()
-                }) {
                     Text("Login")
-                        .font(.headline)
-                        .foregroundColor(.white)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.tripPlannerBackground)
+                    
+                    
+                    TextField("Email", text: $email)
                         .padding()
-                        .frame(width: 200, height: 50)
-                        .background(isLoading ? Color.gray : Color.blue)
-                        .cornerRadius(10)
-                }
-                .disabled(isLoading)
-                .padding(.top, 20)
-                
-                Spacer()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(8)
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .foregroundStyle(.tripPlannerBackground)
 
-                Button(action: {
-                    showingCreateUser = true
-                }) {
-                    Text("Create Account")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
+                    SecureField("Password", text: $password)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(8)
+                        .frame(height: 35)
+                        .foregroundColor(.tripPlannerBackground)
+
+                    
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .padding(.top, 10)
+                    }
+                    
+                        Button(action: {
+                            authenticationContext.login(credencial: .init())
+                        }) {
+                            
+                            Text("Login")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(.tripPlannerBackground.gradient)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .preferredColorScheme(.light)
+                            
+                        }
+                    .disabled(isLoading)
+                    .padding(.top, 20)
+                    
+                Spacer()
                 }
-                .sheet(isPresented: $showingCreateUser) {
-                    CreateUserView()
-                }
-            }
-            .padding()
+                .padding()
+            
         }
     }
 
@@ -98,7 +111,7 @@ struct LoginView: View {
         
         print("login")
         
-        
+     
 //        URLSession.shared.dataTask(with: request) { data, response, error in
 //            DispatchQueue.main.async {
 //                isLoading = false

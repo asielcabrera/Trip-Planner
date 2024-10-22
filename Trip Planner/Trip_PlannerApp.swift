@@ -6,22 +6,24 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct Trip_PlannerApp: App {
-    @Bindable var appViewModel = AuthenticationViewModel()
     
+    @Environment(\.authenticationContext) var authenticationContext
+    @Environment(\.onBoardingContext) var onBoardingContext
     var body: some Scene {
         WindowGroup {
-            if appViewModel.isLoggedIn {
-                ContentView() // Redirige al HomeView si está autenticado
-                    .environmentObject(appViewModel)
+            
+            if onBoardingContext.isOnboardingComplete {
+                if authenticationContext.isLoggedIn {
+                    ContentView() // Redirige al HomeView si está autenticado
+                } else {
+                    LoginView() // Muestra el LoginView si no está autenticado
+                }
             } else {
-                LoginView() // Muestra el LoginView si no está autenticado
-                    .environmentObject(appViewModel)
+                OnboardingView()
             }
         }
-        .modelContainer(for: [Trip.self])
     }
 }

@@ -9,32 +9,36 @@ import SwiftUI
 
 struct WorkersView: View {
     
-    var viewModel = WorkersViewModel()
+    @Binding var viewModel: WorkersViewModel
     @State var showingAddWorkerView = false
     @Binding var showMenu: Bool
     
     var body: some View {
-        
         BaseLayoutView(
             tittle: "Workers",
             plusButtonAction: {
                 showingAddWorkerView = true
             },
             showMenu: $showMenu) {
-                List {
-                    ForEach(viewModel.workers) { worker in
-                        NavigationLink(destination: WorkerDetailView(worker: worker)) {
-                            WorkerRowView(worker: worker) // Mostrar los detalles básicos del viaje en la lista
-                        }
+                if viewModel.workers.isEmpty {
+                    Spacer()
+                    HStack(alignment: .center) {
+                        Spacer()
+                        EmptyListView
+                            .padding()
+                        Spacer()
                     }
-                    .onDelete(perform: viewModel.deleteWorker)
+                    Spacer()
+                } else {
+                    WorkersListView
+                        .padding(.vertical)
                 }
                 
-                .sheet(isPresented: $showingAddWorkerView) {
-                    AddWorkerView(viewModel: viewModel)
-                }
             }
-
+            .sheet(isPresented: $showingAddWorkerView) {
+                AddWorkerView(viewModel: viewModel)
+            }
+        
     }
     
     var EmptyListView: some View {
@@ -44,38 +48,47 @@ struct WorkersView: View {
                 .foregroundStyle(.secondary)
         }
     }
-
+    
     var WorkersListView: some View {
         ScrollView {
-            ForEach(allTrips) { trip in
-                TripListRowView(trip: trip)
+            ForEach(viewModel.workers) { worker in
+                WorkersListRowView(worker: worker)
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            viewModel.deleteWorker(worker)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
             }
-            .onDelete(perform: deleteTrip)
-        }
-        .swipeActions(content: {
             
-        })
+        }
         .scrollIndicators(.hidden)
     }
     
     @ViewBuilder
-    func WorkersListRowView(worker: Workers.Input) -> some View {
+    func WorkersListRowView(worker: Worker.Input) -> some View {
         CustomListRowView {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(trip.dateFor.description)
+                    Text(worker.firstName + worker.lastName)
                         .font(.title3)
-                        .foregroundStyle(.black)
-                    Text(trip.status.rawValue)
+                        .foregroundStyle(.white)
+                    Text(worker.role.rawValue)
                         .font(.caption2)
-                        .foregroundStyle(Color.tripPlannerDark)
+                        .foregroundStyle(.white)
                 }
                 
                 Spacer()
                 
                 VStack {
-                    Text("\(trip.points.count)")
-                        .foregroundStyle(Color.tripPlannerDark)
+                    NavigationLink {
+                        Text("Edit Worker View")
+                    } label: {
+                        Text("Edit")
+                            .foregroundStyle(.tripPlannerDark)
+                    }
+                    
                 }
             }
             .padding(.horizontal, 20)
@@ -92,7 +105,7 @@ struct WorkersView: View {
 
 struct WorkerRowView: View {
     
-    let worker: Worker
+    let worker: Worker.Input
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -105,42 +118,9 @@ struct WorkerRowView: View {
 }
 
 
-struct AddWorkerView: View {
-    @Environment(\.dismiss) var dismiss
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var selectedRole: Role = .Worker
-    var viewModel: WorkersViewModel
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                TextField("First Name", text: $firstName)
-                TextField("Last Name", text: $lastName)
-                Picker("Role", selection: $selectedRole) {
-                    ForEach(Role.allCases) { role in
-                        Text(role.rawValue).tag(role)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle()) // Puedes cambiar el estilo del picker
-                
-                
-                Button("Add Worker") {
-                    viewModel.addWorker(firstName: firstName, lastName: lastName, role: selectedRole)
-                    dismiss()
-                }
-            }
-            .navigationTitle("New Worker")
-            .navigationBarItems(leading: Button("Cancel") {
-                dismiss()
-            })
-        }
-    }
-}
-
 
 struct WorkerDetailView: View {
-    let worker: Worker
+    let worker: Worker.Input
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

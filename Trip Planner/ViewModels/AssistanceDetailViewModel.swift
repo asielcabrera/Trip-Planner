@@ -11,7 +11,7 @@ import SwiftUI
 
 @Observable
 class AssistanceDetailViewModel: ObservableObject {
-    var passengers: [Passanger] = [] // Lista de pasajeros
+    var passengers: [Passanger.Input] = [] // Lista de pasajeros
     var day: Date = .now
 
     func fetchPassengers(for day: Date) {
@@ -19,7 +19,7 @@ class AssistanceDetailViewModel: ObservableObject {
         passengers = [/* Cargar pasajeros para el día específico */]
     }
 
-    func confirmAssistance(_ day: Date?, for passenger: Passanger) {
+    func confirmAssistance(_ day: Date?, for passenger: Passanger.Input) {
         // Implementar lógica para confirmar asistencia
         print("\(passenger.firstName) \(passenger.lastName) confirmed for \(day)")
     }

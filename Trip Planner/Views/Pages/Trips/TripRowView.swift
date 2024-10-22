@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TripRowView: View {
-    let trip: Trip
+    let trip: Trip.Input
     
     var body: some View {
         VStack(alignment: .leading) {

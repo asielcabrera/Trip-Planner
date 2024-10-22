@@ -12,7 +12,7 @@ import SwiftData
 
 
 struct TripDetailView: View {
-    let trip: Trip
+    let trip: Trip.Input
     
     @State private var region = MKCoordinateRegion()
     @State private var polyline: MKPolyline?

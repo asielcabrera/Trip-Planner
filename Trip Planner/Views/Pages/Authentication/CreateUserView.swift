@@ -110,3 +110,9 @@ struct CreateUserView: View {
         }.resume()
     }
 }
+
+
+
+#Preview {
+    CreateUserView()
+}

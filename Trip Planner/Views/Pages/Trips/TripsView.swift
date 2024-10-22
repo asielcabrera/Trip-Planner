@@ -6,31 +6,32 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 struct TripsView: View {
-
+    var viewModel: TripsViewModel { .init() }
     @State private var showingAddTripView = false
     @Binding var showMenu: Bool
-    
-    @Query var allTrips: [Trip] = []
-    @Environment(\.modelContext) var modelContext
-    
+     
     var body: some View {
         BaseLayoutView(
             tittle: "Trips",
             showPlusButtonAction: false,
             showMenu: $showMenu,
             content: {
-            if allTrips.isEmpty {
+                if viewModel.trips.isEmpty {
+                    
                 Spacer()
+                    
                 HStack(alignment: .center) {
                     Spacer()
                     EmptyListView
                         .padding()
                     Spacer()
                 }
+                    
                 Spacer()
+                    
             } else {
                 TripListView
                     .padding(.vertical)
@@ -48,35 +49,26 @@ struct TripsView: View {
 
     var TripListView: some View {
         ScrollView {
-            ForEach(allTrips) { trip in
+            ForEach(viewModel.trips) { trip in
                 TripListRowView(trip: trip)
             }
-            .onDelete(perform: deleteTrip)
+            .onDelete(perform: viewModel.deleteTrip)
         }
-        .swipeActions(content: {
-            
-        })
         .scrollIndicators(.hidden)
     }
     
-    func deleteTrip(_ indexSet: IndexSet) {
-        for index in indexSet {
-            let trip = allTrips[index]
-            modelContext.delete(trip)
-        }
-    }
     
     @ViewBuilder
-    func TripListRowView(trip: Trip) -> some View {
+    func TripListRowView(trip: Trip.Input) -> some View {
         CustomListRowView {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(trip.dateFor.description)
+                    Text(dateFormatter.string(from: trip.dateFor))
                         .font(.title3)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.white)
                     Text(trip.status.rawValue)
                         .font(.caption2)
-                        .foregroundStyle(Color.tripPlannerDark)
+                        .foregroundStyle(.white)
                 }
                 
                 Spacer()
@@ -98,13 +90,5 @@ struct TripsView: View {
 }
 
 #Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try  ModelContainer(for: Trip.self, configurations: config)
-    return ContentView()
-            .modelContainer(container)
-    }
-    catch {
-        fatalError("Unable to create model container: \(error)")
-    }
+    ContentView()
 }

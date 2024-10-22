@@ -13,7 +13,7 @@ struct CustomListRowView<Content: View>: View {
     
     var body: some View {
         Rectangle()
-            .fill(.tripPlannerBackground)
+            .fill(.tripPlannerBackground.gradient)
             .cornerRadius(25)
             .frame(height: 80)
             .overlay {

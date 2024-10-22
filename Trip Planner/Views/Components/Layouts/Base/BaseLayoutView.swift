@@ -12,6 +12,7 @@ struct BaseLayoutView<Content: View>: View  {
     var tittle: String = ""
     var showPlusButtonAction: Bool = true
     var showTittleView: Bool = true
+    var showHeaderView: Bool = true
     var plusButtonAction: () -> Void = { }
     
     @Binding var showMenu: Bool
@@ -22,7 +23,10 @@ struct BaseLayoutView<Content: View>: View  {
             ZStack {
                 Color.tripPlannerLigth.ignoresSafeArea()
                 VStack(alignment: .leading) {
-                    Header
+                    if showHeaderView {
+                        Header
+                    }
+                    
                     if showTittleView {
                         TittleView
                     }
@@ -67,10 +71,10 @@ struct BaseLayoutView<Content: View>: View  {
         VStack(alignment: .leading) {
             Text("Your \(tittle)")
                 .font(.system(size: 15))
-                .foregroundStyle(.tripPlannerBackground.opacity(0.9))
+                .foregroundStyle(.tripPlannerBackground.gradient.opacity(0.9))
             Text("\(tittle)")
                 .font(.system(size: 40))
-                .foregroundStyle(.tripPlannerBackground)
+                .foregroundStyle(.tripPlannerBackground.gradient)
         }
         .padding(.top, 25)
     }

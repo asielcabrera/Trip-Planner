@@ -97,7 +97,7 @@ struct AddPassengerView: View {
                 TextField("Last Name", text: $lastName)
 
                 Button(action: {
-                    let newPassenger = Passanger(firstName: firstName, lastName: lastName, address: "")
+                    let newPassenger = Passanger.Input(id: .init(), firstName: firstName, lastName: lastName, address: "")
                     // Aquí se podría agregar a la lista de pasajeros
                     viewModel.passengers.append(newPassenger)
                     presentationMode.wrappedValue.dismiss() // Cerrar vista

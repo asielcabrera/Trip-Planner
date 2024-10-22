@@ -10,7 +10,7 @@ import SwiftUI
 @Observable
 final class AuthenticationViewModel: ObservableObject {
     var isLoggedIn: Bool = false
-    var user: User? = User(id: UUID(), name: "Asiel Cabrera")
+    var user: User? = User(id: UUID(), firstName: "Asiel Cabrera", lastName: "Cabrera")
     
     init() {
         self.checkToken()
@@ -59,11 +59,4 @@ final class AuthenticationViewModel: ObservableObject {
         UserDefaults.standard.removeObject(forKey: "authToken")
         isLoggedIn = false
     }
-}
-
-
-struct User: Codable, Identifiable {
-    let id: UUID
-    let name: String
-    var role: Role = .Worker
 }
