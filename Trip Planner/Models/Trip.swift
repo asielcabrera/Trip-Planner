@@ -7,15 +7,15 @@
 
 import Foundation
 
-enum Trip {
-    struct Input: Codable, Identifiable {
+public enum Trip {
+    public struct Input: Codable, Identifiable {
         
-        var id: UUID
-        var dateFor: Date
-        var status: Status
-        var points: [Point]
+        public var id: UUID
+        public var dateFor: Date
+        public var status: Status
+        public var points: [Point]
         
-        init(id: UUID, dateFor: Date, status: Status = .pending, points: [Point] = []) {
+        public init(id: UUID, dateFor: Date, status: Status = .pending, points: [Point] = []) {
             self.id = id
             self.dateFor = dateFor
             self.status = status
@@ -23,13 +23,13 @@ enum Trip {
         }
     }
 }
-    struct Point: Codable {
-        let latitude, longitude: Double
+public struct Point: Codable {
+    public let latitude, longitude: Double
     }
     
     
-    enum Status: String, Codable, CaseIterable, Identifiable {
-        case pending, inProgress, completed
+public enum Status: String, Codable, CaseIterable, Identifiable {
+    case pending, inProgress, completed
         
-        var id: String { self.rawValue }
+    public var id: String { self.rawValue }
     }

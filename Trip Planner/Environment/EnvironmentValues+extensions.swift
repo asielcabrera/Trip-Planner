@@ -17,4 +17,24 @@ public extension EnvironmentValues {
         get { self[OnBoardingContextKey.self] }
         set { self[OnBoardingContextKey.self] = newValue }
     }
+    
+    var workerContext: WorkerContext {
+        get { self[WorkerContextKey.self] }
+        set { self[WorkerContextKey.self] = newValue }
+    }
+    
+    var tripContext: TripContext {
+        get { self[TripContextKey.self] }
+        set { self[TripContextKey.self] = newValue }
+    }
+    
+    var passangerContext: PassangerContext {
+        get { self[PassangerContextKey.self] }
+        set { self[PassangerContextKey.self] = newValue }
+    }
+    
+    var assistenceContext: AssistenceContext {
+        get { self[AssistenceContextKey.self] }
+        set { self[AssistenceContextKey.self] = newValue }
+    }
 }

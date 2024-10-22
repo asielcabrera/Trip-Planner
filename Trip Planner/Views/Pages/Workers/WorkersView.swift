@@ -13,6 +13,8 @@ struct WorkersView: View {
     @State var showingAddWorkerView = false
     @Binding var showMenu: Bool
     
+    @Environment(\.workerContext) var workerContext
+    
     var body: some View {
         BaseLayoutView(
             tittle: "Workers",
@@ -20,11 +22,11 @@ struct WorkersView: View {
                 showingAddWorkerView = true
             },
             showMenu: $showMenu) {
-                if viewModel.workers.isEmpty {
+                if workerContext.workers.isEmpty {
                     Spacer()
                     HStack(alignment: .center) {
                         Spacer()
-                        EmptyListView
+                        EmptyListView(tittle: "Workers")
                             .padding()
                         Spacer()
                     }
@@ -36,26 +38,18 @@ struct WorkersView: View {
                 
             }
             .sheet(isPresented: $showingAddWorkerView) {
-                AddWorkerView(viewModel: viewModel)
+                AddWorkerView()
             }
         
     }
-    
-    var EmptyListView: some View {
-        VStack(alignment: .center) {
-            Text("Workers will appear here")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-        }
-    }
-    
+        
     var WorkersListView: some View {
         ScrollView {
-            ForEach(viewModel.workers) { worker in
+            ForEach(workerContext.workers) { worker in
                 WorkersListRowView(worker: worker)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            viewModel.deleteWorker(worker)
+                            workerContext.deleteWorker(worker)
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
@@ -74,7 +68,7 @@ struct WorkersView: View {
                     Text(worker.firstName + worker.lastName)
                         .font(.title3)
                         .foregroundStyle(.white)
-                    Text(worker.role.rawValue)
+                    Text("\(worker.role.rawValue) - \(worker.email)")
                         .font(.caption2)
                         .foregroundStyle(.white)
                 }
@@ -83,7 +77,7 @@ struct WorkersView: View {
                 
                 VStack {
                     NavigationLink {
-                        Text("Edit Worker View")
+                        AddWorkerView(firstName: "elena")
                     } label: {
                         Text("Edit")
                             .foregroundStyle(.tripPlannerDark)

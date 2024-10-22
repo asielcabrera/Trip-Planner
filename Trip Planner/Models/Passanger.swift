@@ -7,26 +7,26 @@
 
 import Foundation
 
-enum Passanger {
-    struct Input: Codable, Identifiable {
-        var id: UUID
-        var firstName: String
-        var lastName: String
-        var address: String
+public enum Passanger {
+    public struct Input: Codable, Identifiable {
+        public var id: UUID
+        public var firstName: String
+        public var lastName: String
+        public var address: String
         
-        var assistence: [WeekDay] = []
+        public var assistence: [WeekDay] = []
     }
-    struct Output: Codable, Identifiable {
-        var id: UUID
-        var firstName: String
-        var lastName: String
-        var address: String
+    public struct Output: Codable, Identifiable {
+        public var id: UUID
+        public var firstName: String
+        public var lastName: String
+        public var address: String
         
-        var assistence: [WeekDay] = []
+        public var assistence: [WeekDay] = []
     }
 }
 
 
-enum WeekDay: String, Codable, CaseIterable {
+public enum WeekDay: String, Codable, CaseIterable {
     case monday, tuesday, wednesday, thursday
 }

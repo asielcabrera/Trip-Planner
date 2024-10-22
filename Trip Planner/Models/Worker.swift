@@ -7,27 +7,30 @@
 
 import Foundation
 
-enum Worker {
-    struct Input: Codable, Identifiable {
-        var id: UUID
+public enum Worker {
+    public struct Input: Codable, Identifiable {
+        public var id: UUID
         
-        var firstName: String
-        var lastName: String
-        var role: Role
+        public var firstName: String
+        public var lastName: String
+        public var email: String
+        public var role: Role
         
-        init(id: UUID, firstName: String, lastName: String, role: Role) {
+        public   init(id: UUID, firstName: String, lastName: String, email: String, role: Role) {
             self.id = id
             self.firstName = firstName
             self.lastName = lastName
+            self.email = email
             self.role = role
         }
     }
     
-    struct Output: Codable, Identifiable {
-        var id: UUID
+    public struct Output: Codable, Identifiable {
+        public var id: UUID
         
-        var firstName: String
-        var lastName: String
-        var role: Role
+        public var firstName: String
+        public var lastName: String
+        public var email: String
+        public var role: Role
     }
 }

@@ -9,34 +9,85 @@ import SwiftUI
 
 struct AddWorkerView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var selectedRole: Role = .Worker
-    var viewModel: WorkersViewModel
+    @Environment(\.workerContext) var workerContext
+    
+    @State var firstName = ""
+    @State var lastName = ""
+    @State var email = ""
+    @State var selectedRole: Role = .Worker
+    
+    @State private var errorMessage: String? = nil
+    @State private var isLoading = false
+    
     
     var body: some View {
-        NavigationView {
-            Form {
-                TextField("First Name", text: $firstName)
-                TextField("Last Name", text: $lastName)
-                Picker("Role", selection: $selectedRole) {
-                    ForEach(Role.allCases) { role in
-                        Text(role.rawValue).tag(role)
+        BaseLayoutView(
+            showTittleView: false,
+            showHeaderView: false,
+            showMenu: .constant(false)
+        ) {
+            
+            VStack(alignment: .leading, spacing: 20) {
+                Text("New Worker")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.tripPlannerBackground)
+                
+                    Spacer()
+        
+                TextField("FirstName", text: $firstName)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(8)
+                        .foregroundStyle(.tripPlannerBackground)
+
+                TextField("LastName", text: $lastName)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(8)
+                        .foregroundStyle(.tripPlannerBackground)
+
+                
+                TextField("Email", text: $email)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(8)
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+                    .foregroundStyle(.tripPlannerBackground)
+                    
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .padding(.top, 10)
                     }
+                    
+                        Button(action: {
+                            workerContext.addWorker(firstName: firstName, lastName: lastName, email: email, role: .Admin)
+                            dismiss()
+                        }) {
+                            
+                            Text("Add Worker")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(.tripPlannerBackground.gradient)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .preferredColorScheme(.light)
+                            
+                        }
+                    .disabled(isLoading)
+                    .padding(.top, 20)
+                    
+                Spacer()
                 }
-                .pickerStyle(SegmentedPickerStyle()) // Puedes cambiar el estilo del picker
-                
-                
-                Button("Add Worker") {
-                    viewModel.addWorker(firstName: firstName, lastName: lastName, role: selectedRole)
-                    dismiss()
-                }
-            }
-            .navigationTitle("New Worker")
-            .navigationBarItems(leading: Button("Cancel") {
-                dismiss()
-            })
+                .padding()
+            
         }
     }
 }
 
+#Preview {
+    AddWorkerView()
+}

@@ -10,15 +10,11 @@ import Foundation
 @Observable
 class WorkersViewModel {
     var workers: [Worker.Input] = [
-        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", role: .Worker),
-        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", role: .Worker),
-        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", role: .Worker),
-        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", role: .Worker),
-        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", role: .Worker)
+        .init(id: .init(), firstName: "Asiel", lastName: "Cabrera", email: "", role: .Worker),
     ]
     
     func addWorker(firstName: String, lastName: String, role: Role) {
-        let newWorker = Worker.Input(id: .init(), firstName: firstName, lastName: lastName, role: role)
+        let newWorker = Worker.Input(id: .init(), firstName: firstName, lastName: lastName, email: "", role: role)
         workers.append(newWorker)
     }
     
