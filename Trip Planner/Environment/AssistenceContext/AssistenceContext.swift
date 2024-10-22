@@ -14,6 +14,7 @@ public final class AssistenceContext {
     
     public func addAssistence(firstName: String, lastName: String, email: String, role: Role) {
         let assistence = Assistence.Input(id: .init(), assistenceDay: .now, conffirmationComplete: false)
+        
         assistences.append(assistence)
     }
     
